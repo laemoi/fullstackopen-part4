@@ -129,3 +129,32 @@ describe('author with most blogs', () => {
     )
   })
 })
+
+describe('author with most likes', () => {
+  test('when list is empty, should be undefined', () => {
+    const result = listHelper.mostLikes(emptyBlogList)
+    assert.strictEqual(result, undefined)
+  })
+
+  test('when list has only one blog, should be the author of that blog', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    assert.deepStrictEqual(
+      result,
+      {
+        author: 'Edsger W. Dijkstra',
+        likes: 5
+      }
+    )
+  })
+
+  test('when list has multiple blogs, should be the author with most likes', () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    assert.deepStrictEqual(
+      result,
+      {
+        author: 'Teemu Teekkari',
+        likes: 99
+      }
+    )
+  })
+})
