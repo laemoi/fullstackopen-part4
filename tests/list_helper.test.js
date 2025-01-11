@@ -36,6 +36,14 @@ const listWithMultipleBlogs = [
     url: 'https://tietokilta.fi/fi',
     likes: 21,
     __v: 0
+  },
+  {
+    _id: 'a003',
+    title: 'I have the most blogs now!',
+    author: 'Tiina Teekkari',
+    url: 'https://tietokilta.fi/fi',
+    likes: 15,
+    __v: 0
   }
 ]
 
@@ -52,7 +60,7 @@ describe('total likes', () => {
 
   test('when list has multiple blogs, equals the sum of the likes of each blog', () => {
     const result = listHelper.totalLikes(listWithMultipleBlogs)
-    assert.strictEqual(result, 120)
+    assert.strictEqual(result, 135)
   })
 })
 
@@ -88,6 +96,35 @@ describe('favorite blog', () => {
         url: 'https://tietokilta.fi/fi',
         likes: 99,
         __v: 0
+      }
+    )
+  })
+})
+
+describe('author with most blogs', () => {
+  test('when list is empty, should be undefined', () => {
+    const result = listHelper.mostBlogs(emptyBlogList)
+    assert.strictEqual(result, undefined)
+  })
+
+  test('when list has only one blog, should be the author of that blog', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    assert.deepStrictEqual(
+      result,
+      {
+        author: 'Edsger W. Dijkstra',
+        blogs: 1
+      }
+    )
+  })
+
+  test('when list has multiple blogs, should be the author with most blogs', () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs)
+    assert.deepStrictEqual(
+      result,
+      {
+        author: 'Tiina Teekkari',
+        blogs: 2
       }
     )
   })
