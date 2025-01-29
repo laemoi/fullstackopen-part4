@@ -49,6 +49,12 @@ test.only('correct amount of blogs is returned', async () => {
   assert.strictEqual(res.body.length, initialBlogs.length)
 })
 
+test.only('unique identifier property should be named \'id\'', async () => {
+  const res = await api.get('/api/blogs')
+  objectKeys = Object.keys(res.body[0])
+  assert(objectKeys.includes('id') && !objectKeys.includes('_id'))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
