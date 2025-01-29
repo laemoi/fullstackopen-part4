@@ -83,6 +83,16 @@ test.only('new blog is saved to database correctly', async () => {
   assert.deepStrictEqual(newBlog, returnedBlog)
 })
 
+test.only('if \'likes\' property is missing, default value is one', async () => {
+  const newBlog = {
+    title: 'I am new here!',
+    author: 'Tatu Teekkari',
+    url: 'https://tietokilta.fi/fi'
+  }
+  const res = await api.post('/api/blogs').send(newBlog)
+  assert(res.body.likes === 0)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
