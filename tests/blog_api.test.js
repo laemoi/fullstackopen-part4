@@ -1,4 +1,4 @@
-const { test, beforeEach, after } = require('node:test')
+const { test, describe, beforeEach, after } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -115,6 +115,25 @@ test.only('status code 400 is returned if \'url\' property is missing', async ()
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
+})
+
+describe.only('when deleting a blog resource', () => {
+  test.only('blog should be deleted if \'id\' is valid', async () => {
+    const blogToDelete = (await api.get('/api/blogs')).body[0]
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    const updatedBlogs = (await api.get('/api/blogs')).body
+    const updatedIDs = updatedBlogs.map(b => b.id)
+    assert(!updatedIDs.includes(blogToDelete.id))
+  })
+
+  test.only('status code 404 should be returned if blog does not exist', async () => {
+    const invalidID = '679a62fd6385886385afdddd'
+    await api
+      .delete(`/api/blogs/${invalidID}`)
+      .expect(404)
+  })
 })
 
 after(async () => {
