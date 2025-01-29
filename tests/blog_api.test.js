@@ -55,6 +55,34 @@ test.only('unique identifier property should be named \'id\'', async () => {
   assert(objectKeys.includes('id') && !objectKeys.includes('_id'))
 })
 
+test.only('creating a new blog increases total blog count by one', async () => {
+  const newBlog = {
+    title: 'I am new here!',
+    author: 'Tatu Teekkari',
+    url: 'https://tietokilta.fi/fi',
+    likes: 1
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  const res = await api.get('/api/blogs')
+  assert(initialBlogs.length + 1 === res.body.length)
+})
+
+test.only('new blog is saved to database correctly', async () => {
+  const newBlog = {
+    title: 'I am new here!',
+    author: 'Tatu Teekkari',
+    url: 'https://tietokilta.fi/fi',
+    likes: 1
+  }
+  const res = await api.post('/api/blogs').send(newBlog)
+  const { id: _, ...returnedBlog } = res.body
+  assert.deepStrictEqual(newBlog, returnedBlog)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
