@@ -93,6 +93,30 @@ test.only('if \'likes\' property is missing, default value is one', async () => 
   assert(res.body.likes === 0)
 })
 
+test.only('status code 400 is returned if \'title\' property is missing', async () => {
+  const newBlog = {
+    author: 'Tatu Teekkari',
+    url: 'https://tietokilta.fi/fi',
+    likes: 1
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
+test.only('status code 400 is returned if \'url\' property is missing', async () => {
+  const newBlog = {
+    title: 'I am new here!',
+    author: 'Tatu Teekkari',
+    likes: 1
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
