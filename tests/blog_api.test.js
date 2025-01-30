@@ -136,6 +136,25 @@ describe.only('when deleting a blog resource', () => {
   })
 })
 
+describe.only('when updating a blog resource', () => {
+  test.only('blog should be updated correctly', async () => {
+    const blogToUpdate = (await api.get('/api/blogs')).body[0]
+    const modifiedBlog = { ...blogToUpdate, likes: 6314}
+    const res = (await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(modifiedBlog)).body
+    assert.deepStrictEqual(res, modifiedBlog)
+    assert(res.likes === 6314)
+  })
+
+  test.only('status code 404 should be returned if blog does not exist', async () => {
+    const invalidID = '679a62fd6385886385afdddd'
+    await api
+      .put(`/api/blogs/${invalidID}`)
+      .expect(404)
+  })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
