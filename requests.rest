@@ -5,7 +5,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VydHdvIiwiaWQiOiI2N2E2MjMzOGJlYWYzZTg0ZjY1Mjc5ZjYiLCJpYXQiOjE3Mzg5NDYyODZ9.YE51-aV1nShRRWl5I3gPGMCcaBM308zrP_3xYuoVI7o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VydHdvIiwiaWQiOiI2N2E2MjMzOGJlYWYzZTg0ZjY1Mjc5ZjYiLCJpYXQiOjE3Mzg5NDcxNjZ9.SCp1DjEp0SgRzWZoSwy4bCSo1q_VnAgyE88k9_NwQ0I
 
 {
   "title": "Test blog with valid auth",
