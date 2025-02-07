@@ -37,25 +37,25 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test.only('blogs are returned as JSON', async () => {
+test('blogs are returned as JSON', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
 })
 
-test.only('correct amount of blogs is returned', async () => {
+test('correct amount of blogs is returned', async () => {
   const res = await api.get('/api/blogs')
   assert.strictEqual(res.body.length, initialBlogs.length)
 })
 
-test.only('unique identifier property should be named \'id\'', async () => {
+test('unique identifier property should be named \'id\'', async () => {
   const res = await api.get('/api/blogs')
   objectKeys = Object.keys(res.body[0])
   assert(objectKeys.includes('id') && !objectKeys.includes('_id'))
 })
 
-test.only('creating a new blog increases total blog count by one', async () => {
+test('creating a new blog increases total blog count by one', async () => {
   const newBlog = {
     title: 'I am new here!',
     author: 'Tatu Teekkari',
@@ -71,7 +71,7 @@ test.only('creating a new blog increases total blog count by one', async () => {
   assert(initialBlogs.length + 1 === res.body.length)
 })
 
-test.only('new blog is saved to database correctly', async () => {
+test('new blog is saved to database correctly', async () => {
   const newBlog = {
     title: 'I am new here!',
     author: 'Tatu Teekkari',
@@ -83,7 +83,7 @@ test.only('new blog is saved to database correctly', async () => {
   assert.deepStrictEqual(newBlog, returnedBlog)
 })
 
-test.only('if \'likes\' property is missing, default value is one', async () => {
+test('if \'likes\' property is missing, default value is one', async () => {
   const newBlog = {
     title: 'I am new here!',
     author: 'Tatu Teekkari',
@@ -93,7 +93,7 @@ test.only('if \'likes\' property is missing, default value is one', async () => 
   assert(res.body.likes === 0)
 })
 
-test.only('status code 400 is returned if \'title\' property is missing', async () => {
+test('status code 400 is returned if \'title\' property is missing', async () => {
   const newBlog = {
     author: 'Tatu Teekkari',
     url: 'https://tietokilta.fi/fi',
@@ -105,7 +105,7 @@ test.only('status code 400 is returned if \'title\' property is missing', async 
     .expect(400)
 })
 
-test.only('status code 400 is returned if \'url\' property is missing', async () => {
+test('status code 400 is returned if \'url\' property is missing', async () => {
   const newBlog = {
     title: 'I am new here!',
     author: 'Tatu Teekkari',
@@ -117,8 +117,8 @@ test.only('status code 400 is returned if \'url\' property is missing', async ()
     .expect(400)
 })
 
-describe.only('when deleting a blog resource', () => {
-  test.only('blog should be deleted if \'id\' is valid', async () => {
+describe('when deleting a blog resource', () => {
+  test('blog should be deleted if \'id\' is valid', async () => {
     const blogToDelete = (await api.get('/api/blogs')).body[0]
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
@@ -128,7 +128,7 @@ describe.only('when deleting a blog resource', () => {
     assert(!updatedIDs.includes(blogToDelete.id))
   })
 
-  test.only('status code 404 should be returned if blog does not exist', async () => {
+  test('status code 404 should be returned if blog does not exist', async () => {
     const invalidID = '679a62fd6385886385afdddd'
     await api
       .delete(`/api/blogs/${invalidID}`)
@@ -136,8 +136,8 @@ describe.only('when deleting a blog resource', () => {
   })
 })
 
-describe.only('when updating a blog resource', () => {
-  test.only('blog should be updated correctly', async () => {
+describe('when updating a blog resource', () => {
+  test('blog should be updated correctly', async () => {
     const blogToUpdate = (await api.get('/api/blogs')).body[0]
     const modifiedBlog = { ...blogToUpdate, likes: 6314}
     const res = (await api
@@ -147,7 +147,7 @@ describe.only('when updating a blog resource', () => {
     assert(res.likes === 6314)
   })
 
-  test.only('status code 404 should be returned if blog does not exist', async () => {
+  test('status code 404 should be returned if blog does not exist', async () => {
     const invalidID = '679a62fd6385886385afdddd'
     await api
       .put(`/api/blogs/${invalidID}`)
