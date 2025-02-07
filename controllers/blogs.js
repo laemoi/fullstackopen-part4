@@ -29,10 +29,22 @@ blogRouter.post('/', async (request, response) => {
   }
 })
 
+// TODO: refactor 404 sending
 blogRouter.delete('/:id', async (request, response) => {
-  const result = await Blog.findByIdAndDelete(request.params.id)
-  if (result) {
-    response.status(204).send()
+  const blogToDelete = await Blog.findById(request.params.id)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+  if (blogToDelete) {
+    if (decodedToken.id === blogToDelete.user.toString()) {
+      const result = await Blog.findByIdAndDelete(request.params.id)
+      if (result) {
+        response.status(204).send()
+      } else {
+        response.status(404).send(`Blog with id ${request.params.id} was not found`)
+      }
+    } else {
+      response.status(401).json({ error: 'Only the user that created a blog can delete it' })
+    }
   } else {
     response.status(404).send(`Blog with id ${request.params.id} was not found`)
   }
