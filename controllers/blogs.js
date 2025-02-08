@@ -14,14 +14,15 @@ blogRouter.post('/', async (request, response) => {
     : { likes: 0, ...request.body }
 
   if (blogObject.title && blogObject.url) {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!decodedToken.id) {
+    const user = request.user
+    if (!user.id) {
       return response.status(401).json({ error: 'Invalid token'})
     }
-    const user = await User.findById(decodedToken.id)
-    const blog = new Blog({ user: user._id, ...blogObject })
-    user.blogs = user.blogs.concat(blog._id)
-    await user.save()
+
+    const blog = new Blog({ user: user.id, ...blogObject })
+    const userInDb = await User.findById(user.id)
+    userInDb.blogs = userInDb.blogs.concat(blog._id)
+    await userInDb.save()
     const result = await blog.save()
     response.status(201).json(result)
   } else {
@@ -32,10 +33,10 @@ blogRouter.post('/', async (request, response) => {
 // TODO: refactor 404 sending
 blogRouter.delete('/:id', async (request, response) => {
   const blogToDelete = await Blog.findById(request.params.id)
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  const user = request.user
 
   if (blogToDelete) {
-    if (decodedToken.id === blogToDelete.user.toString()) {
+    if (user.id === blogToDelete.user.toString()) {
       const result = await Blog.findByIdAndDelete(request.params.id)
       if (result) {
         response.status(204).send()
