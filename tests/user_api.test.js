@@ -8,7 +8,7 @@ const User = require('../models/user.js')
 
 const api = supertest(app)
 
-describe.only('when there is one initial user in database', () => {
+describe('when there is one initial user in database', () => {
   beforeEach(async () => {
     await User.deleteMany({})
     const passwordHash = await bcrypt.hash('secret password', 10)
@@ -20,7 +20,7 @@ describe.only('when there is one initial user in database', () => {
     await firstUser.save()
   })
 
-  test.only('user with unique username should be created properly', async () => {
+  test('user with unique username should be created properly', async () => {
     const newUser = {
       username: 'tteekkari',
       name: 'Teemu Teekkari',
@@ -35,7 +35,7 @@ describe.only('when there is one initial user in database', () => {
     assert(usersAtEnd.length === 2)
   })
 
-  test.only('user with existing username should not be created', async () => {
+  test('user with existing username should not be created', async () => {
     const newUser = {
       username: 'root',
       name: 'Tiina Teekkari',
@@ -51,7 +51,7 @@ describe.only('when there is one initial user in database', () => {
     assert(usersAtEnd.length === 1)
   })
 
-  test.only('user with missing username should not be created', async () => {
+  test('user with missing username should not be created', async () => {
     const newUser = {
       name: 'Teemu Teekkari',
       password: 'teemupassword'
@@ -66,7 +66,7 @@ describe.only('when there is one initial user in database', () => {
     assert(usersAtEnd.length === 1)
   })
 
-  test.only('user with invalid username should not be created', async () => {
+  test('user with invalid username should not be created', async () => {
     const newUser = {
       username: 'T',
       name: 'Teemu Teekkari',
@@ -82,7 +82,7 @@ describe.only('when there is one initial user in database', () => {
     assert(usersAtEnd.length === 1)
   })
 
-  test.only('user with missing password should not be created', async () => {
+  test('user with missing password should not be created', async () => {
     const newUser = {
       username: 'tteekkari',
       name: 'Teemu Teekkari'
@@ -97,7 +97,7 @@ describe.only('when there is one initial user in database', () => {
     assert(usersAtEnd.length === 1)
   })
 
-  test.only('user with invalid password should not be created', async () => {
+  test('user with invalid password should not be created', async () => {
     const newUser = {
       username: 'tteekkari',
       name: 'Teemu Teekkari',
