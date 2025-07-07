@@ -42,9 +42,9 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-  "username": "tteekkari",
-  "name": "Teemu Teekkari",
-  "password": "teemupassword"
+  "username": "root",
+  "name": "Root User",
+  "password": "root"
 }
 
 ###

@@ -21,6 +21,11 @@ blogRouter.post('/', async (request, response) => {
 
     const blog = new Blog({ user: user.id, ...blogObject })
     const userInDb = await User.findById(user.id)
+    if (!userInDb) {
+      return response
+        .status(404)
+        .send(`User \'${user.username}\' with id ${user.id} that was extracted by the middleware was not found in the database`)
+    }
     userInDb.blogs = userInDb.blogs.concat(blog._id)
     await userInDb.save()
     const result = await blog.save()
@@ -47,7 +52,15 @@ blogRouter.delete('/:id', async (request, response) => {
 })
 
 blogRouter.put('/:id', async (request, response) => {
-  const { title, author, url, likes } = request.body
+  // The course exercise requires that the user is sent in the request body, even
+  // though the middleware extracts that user anyways...
+  const { user, title, author, url, likes } = request.body
+
+  const userInDb = await User.findById(user?.id)
+  if (!userInDb) {
+    return response.status(401).json({ error: `User with id ${user} not found` })
+  }
+
   const blogToUpdate = (await Blog.findById(request.params.id))?.toJSON()
   if (blogToUpdate) {
     const newBlog = { ...blogToUpdate, title, author, url, likes } 

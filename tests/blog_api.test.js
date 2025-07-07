@@ -212,9 +212,12 @@ describe('when updating a blog resource', () => {
   })
 
   test('status code 404 should be returned if blog does not exist', async () => {
+    const blogToUpdate = (await api.get('/api/blogs')).body[0]
+    const modifiedBlog = { ...blogToUpdate, likes: 999 }
     const invalidID = '679a62fd6385886385afdddd'
     await api
       .put(`/api/blogs/${invalidID}`)
+      .send(modifiedBlog)
       .expect(404)
   })
 })
